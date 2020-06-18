@@ -1,0 +1,27 @@
+{
+  "name": "shop-api",
+  "version": "1.0.0",
+  "description": "A Node.JS Restful API to build a simple shop",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/OmarAhmed3012/shop-api.git"
+  },
+  "keywords": [
+    "node",
+    "restful",
+    "api"
+  ],
+  "author": "Omar ahmed",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/OmarAhmed3012/shop-api/issues"
+  },
+  "homepage": "https://github.com/OmarAhmed3012/shop-api#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
