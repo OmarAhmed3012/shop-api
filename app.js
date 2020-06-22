@@ -2,12 +2,18 @@ const express = require('express');
 const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const mongoose = require('mongoose');
+const Consts = require('./Consts/Consts')
 
 const productRouters = require('./api/routes/product');
 const orderRouters = require('./api/routes/order');
 
+mongoose.connect('mongodb+srv://user:' + Consts.MONGOPASS + '@cluster0-ddq7s.mongodb.net/test?retryWrites=true&w=majority', {
+    useMongoClient: true
+});
+
 app.use(morgan('dev'));
-app.use(bodyParser.urlencoded({extended = false}));
+app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {

@@ -1,48 +1,86 @@
 const express = require('express');
 const { response } = require('../../app');
+const mongoose = require('mongoose');
+const Product = require('../models/product');
 
 const router = express.Router();
 
 router.get('/', (req, res, next) => {
-    res.status(201).json({
-        message: 'handel get request to /products'
+    Product.find().exec().then(docs => {
+        console.log(docs);
+        res.status(200).json(docs);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json(({
+            error: err
+        }));
     });
 });
 
 router.post('/', (req, res, next) => {
-    res.status(200).json({
-        message: 'handel post request to /products'
+    const product = new Product({
+        _id: new mongoose.Types.ObjectId(),
+        name: req.body.name,
+        price: req.body.price
     });
+    product.save().then(result => {
+        console.log(result);
+        res.status(200).json({
+            message: 'handel post request to /products',
+            createdProduct: product
+        });
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({ error: err });
+    });
+    
 });
 
 router.get('/:productId', (req, res, next) => {
     const id = req.params.productId;
-    if(id === '123') {
-        res.status(200).json({
-            message: 'done with id 123',
-            id: id
+    Product.findById(id).exec().then(doc => {
+        console.log(doc);
+        if(doc) {
+            res.status(200).json(doc);
+        } else {
+            res.status(400).json({ message: "NO VALUE" });
+        }
+    }).catch(err => {
+        console.log(err)
+        res.status(500).json({
+            error: err 
         });
-    } else {
-        res.status(200).json({
-            message: 'not found id 123',
-            id: id
-        });
-    }
+    }); 
+    
 });
 
 router.patch('/:productId', (req, res, next) => {
     const id = req.params.productId;
-    res.status(200).json({
-        message: 'updated Product',
-        id: id
+    const updateOps = {};
+    for(const ops of req.body) {
+        updateOps[ops.propName] = ops.value;
+    }
+    Product.update({_id: id}, { $set: updateOps }).exec().then(result => {
+        console.log(result);
+        res.status(200).json(result);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
     });
 });
 
 router.delete('/:productId', (req, res, next) => {
     const id = req.params.productId;
-    res.status(200).json({
-        message: 'deleted Product',
-        id: id
+    Product.remove({_id: id}).exec().then(result => {
+        console.log(result);
+        res.status(200).json(result);
+    }).catch(err => {
+        console.log(err);
+        res.status(500).json({
+            error: err
+        });
     });
 });
 
