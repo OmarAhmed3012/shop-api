@@ -8,9 +8,8 @@ const Consts = require('./Consts/Consts')
 const productRouters = require('./api/routes/product');
 const orderRouters = require('./api/routes/order');
 
-mongoose.connect('mongodb+srv://user:' + Consts.MONGOPASS + '@cluster0-ddq7s.mongodb.net/test?retryWrites=true&w=majority', {
-    useMongoClient: true
-});
+mongoose.connect('mongodb+srv://user:' + Consts.MONGOPASS + '@cluster0-ddq7s.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.Promise = global.Promise;
 
 app.use(morgan('dev'));
 app.use(bodyParser.urlencoded({ extended: false }));
